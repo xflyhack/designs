@@ -1,9 +1,9 @@
 {
-    "name": "administrator/composer",
+    "name": "pengminmin/composer",
     "authors": [
         {
             "name": "pengminmin",
-            "email": "meetright@163.com"
+            "email": "meetright1123@163.com"
         }
     ],
     "require": {},
