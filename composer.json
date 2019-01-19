@@ -1,0 +1,15 @@
+{
+    "name": "administrator/composer",
+    "authors": [
+        {
+            "name": "pengminmin",
+            "email": "meetright@163.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "": "observer/"
+        }
+    }
+}
