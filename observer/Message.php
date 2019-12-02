@@ -1,16 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2019/1/19
- * Time: 15:05
- */
-
+require_once './Observer.php';
 class Message implements Observer
 {
+    /**
+     * 推送消息
+     * @param Observable $observable
+     */
     public function update(Observable $observable)
     {
-        // TODO: Implement update() method.
-        echo "message";
+        $orderInfo = $observable->getOrderInfo();
+        if($observable->getState()) {
+            echo "推送消息\r\n" . print_r($orderInfo,true) . "\r\n";
+        }else{
+            echo "不推送消息\r\n";
+        }
     }
 }
+

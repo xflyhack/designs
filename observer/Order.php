@@ -1,74 +1,77 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2019/1/17
- * Time: 9:22
- */
-
-
-
+require_once 'Observable.php';
+require_once 'Email.php';
+require_once 'Log.php';
+require_once 'Message.php';
 class Order implements Observable
 {
-    //保存观察者
-    /**
-     * @var array Observer[]
-     */
-    private $observers = array();
-
-    //订单状态
-    private $state = 0;
+    // 订单状态
+    private $state      = 0;
+    private $orderInfo = [];
+    // 观察者列表
+    private $observers  = [];
 
     /**
-     * 添加观察者
+     * 加入观察者对象
      * @param Observer $observer
      */
     public function attach(Observer $observer)
     {
-
-        // TODO: Implement attach() method.
-        $key = array_search($observer, $this->observers);
-        if($key === false){
+        $key = array_search($observer,$this->observers);
+        if(false === $key) {
             $this->observers[] = $observer;
         }
     }
 
     /**
-     * 删除观察者
+     * 删除观察者对象
      * @param Observer $observer
      */
     public function detach(Observer $observer)
     {
-        // TODO: Implement detach() method.
-        $key = array_search($observer, $this->observers);
-        if($key !== false){
+        $key = array_search($observer,$this->observers);
+        if($key) {
             unset($this->observers[$key]);
         }
+
     }
 
+
     /**
-     * 遍历观察者的 update() 方法
+     * 通知具体业务
      */
     public function notify()
     {
-
-        // TODO: Implement notify() method.
-//        var_dump($this->observers);exit;
-        foreach($this->observers as $observer){
-            $observer->update($this);
+        // 循环指定被观察者的update方法
+        foreach($this->observers as $obj) {
+            $obj->update($this);
         }
     }
-
     /**
-     * 订单有变化时发送通知
+     * 创建订单
      */
     public function addOrder()
     {
+        // 插入数据库
 
-        $this->state = 1;
+
+
+
+        // 获取到订单信息
+        $this->orderInfo = [
+            'title' => '商品标题',
+            'price' => 200,
+            'intro' => '商品的简介......',
+        ];
+
+        // 订单变更
+        $state = 1;
+        $this->state =$state;
+
+
+        // 订单完成 执行推送邮件、记录日志通知
         $this->notify();
     }
-
     /**
      * 获取订单状态
      * @return int
@@ -77,4 +80,16 @@ class Order implements Observable
     {
         return $this->state;
     }
+
+    public function getOrderInfo()
+    {
+        return $this->orderInfo;
+    }
 }
+
+
+$orderObj = new Order();
+$orderObj->attach(new Email());
+$orderObj->attach(new Log());
+$orderObj->attach(new Message());
+$orderObj->addOrder();

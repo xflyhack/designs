@@ -1,27 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2019/1/17
- * Time: 9:42
- */
-
-
-
+require_once './Observer.php';
 class Email implements Observer
 {
-
-
+    /**
+     * 更新用户信息
+     * @param Observable $observable
+     */
     public function update(Observable $observable)
     {
-
-        // TODO: Implement update() method.
-        $state = $observable->getState();
-
-        if($state){
-            echo '发送邮件，成功下单';
+        $orderInfo = $observable->getOrderInfo();
+        if($observable->getState()) {
+            echo "发送邮件队列\r\n" . print_r($orderInfo,true) . "\r\n";
         }else{
-            echo '发送邮件，操作失败';
+            echo "不加入队列\r\n";
         }
     }
 }
+
